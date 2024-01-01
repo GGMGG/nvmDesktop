@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="../plugins/index/css/index.css" />
+    <title id="title"></title>
+  </head>
+
+  <body class="layui-container">
+    <!-- 头部操作栏 -->
+    <form class="layui-form" name="toolForm" lay-filter="tool-form-filter">
+      <div class="layui-form-item">
+        <div class="layui-row container-toolbar">
+          <div class="layui-col-xs3">
+            <span class="layui-badge layui-bg-blue" id="nvm-version" title="nvm版本">检测中...</span>
+          </div>
+          <div class="layui-col-xs3 layui-col-xs-offset6">
+            <div class="layui-inline layui-btn-container layui-act-btn-group" style="float: right">
+              <button type="submit" class="layui-btn layui-btn-primary layui-border-color layui-btn-sm" lay-submit lay-filter="refresh-btn" title="刷新">
+                <img src="../assets/svg/reflash.svg" />
+              </button>
+              <button
+                type="button"
+                class="layui-btn layui-btn-primary layui-border-color layui-btn-sm"
+                lay-submit
+                lay-filter="node-install-btn"
+                id="node-install-btn"
+                title="NODE安装"
+              >
+                <img src="../assets/svg/add.svg" />
+              </button>
+              <button
+                type="button"
+                class="layui-btn layui-btn-primary layui-border-color layui-btn-sm"
+                lay-submit
+                lay-filter="npm-install-btn"
+                id="npm-install-btn"
+                title="NPM安装"
+                style="display: none"
+              >
+                <img src="../assets/svg/add.svg" />
+              </button>
+              <button
+                type="button"
+                class="layui-btn layui-btn-primary layui-border-color layui-btn-sm"
+                lay-submit
+                lay-filter="nrm-add-btn"
+                id="nrm-add-btn"
+                title="NRM添加"
+                style="display: none"
+              >
+                <img src="../assets/svg/add.svg" />
+              </button>
+
+              <button
+                type="button"
+                class="layui-btn layui-btn-primary layui-border-color layui-btn-sm"
+                lay-submit
+                lay-filter="npm-cache-clean-btn"
+                id="npm-cache-clean-btn"
+                title="NPM清除缓存"
+                style="display: none"
+              >
+                <img src="../assets/svg/clear.svg" />
+              </button>
+
+              <button type="button" class="layui-btn layui-btn-primary layui-border-color layui-btn-sm" lay-submit lay-filter="switchNvm-btn" id="switch-nvm-btn" title="关闭">
+                <img src="../assets/svg/switch.svg" />
+              </button>
+              <button type="button" class="layui-btn layui-btn-primary layui-border-color layui-btn-sm" lay-submit lay-filter="help-btn" title="关于">
+                <img src="../assets/svg/tips.svg" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+    <!-- 头部操作栏 -->
+    <!-- 系统帮助抽屉 -->
+    <div class="layer-right help-div" style="display: none" id="help-form-drawer">
+      <fieldset class="layui-elem-field">
+        <legend>概述</legend>
+        <div class="layui-field-box">
+          <article class="help-other">
+            Nvm Version: <span id="help-nvm-version"></span>
+            <span id="help-nrm" style="margin-left: 10px">Nrm Version: <span id="help-nrm-version"></span></span>
+          </article>
+          <article class="help-other">
+            Desktop Version: 0.0.1
+            <a href="https://github.com/GGMGG/nvmDesktop" target="_blank" title="github" style="margin-left: 10px">
+              <i class="layui-icon layui-icon-github layui-font-26"></i>
+            </a>
+            <a href="https://gitee.com/GGMGG/nvmDesktop" target="_blank" title="gitee" style="margin-left: 10px">
+              <i class="layui-icon layui-icon-gitee layui-font-26" style="color: #c71d23"></i>
+            </a>
+          </article>
+          <br />
+          <article>1.本工具需安装NVM后使用</article>
+          <article>2.暂不支持1.1.12及以上版本（原因：作者增加了isTerminal判断）</article>
+          <article>3.技术栈：electron，electron-forge，layui</article>
+          <article>
+            4.功能点：
+            <br />
+            ①nvm的开关，nvm的proxy、mirror配置
+            <br />
+            ②本地node切换，卸载
+            <br />
+            ③远程node版本获取，安装
+            <br />
+            ④npm全局依赖安装，卸载
+            <br />
+            ⑤nrm的新增，删除，切换
+          </article>
+        </div>
+      </fieldset>
+      <fieldset class="layui-elem-field">
+        <legend>NVM下载地址</legend>
+        <div class="layui-field-box">
+          <a href="https://github.com/coreybutler/nvm-windows/releases" target="_blank">https://github.com/coreybutler/nvm-windows/releases</a>
+        </div>
+      </fieldset>
+      <fieldset class="layui-elem-field">
+        <legend>NODE更多版本</legend>
+        <div class="layui-field-box">
+          <a href="https://nodejs.org/en/download/releases" target="_blank">https://nodejs.org/en/download/releases</a>
+        </div>
+      </fieldset>
+      <fieldset class="layui-elem-field">
+        <legend>NVM配置</legend>
+        <div class="layui-field-box">
+          <form class="layui-form">
+            <div class="layui-inline layui-btn-container layui-act-btn-group">
+              <button type="button" class="layui-btn layui-btn-primary layui-border-color layui-btn-sm" lay-submit lay-filter="set-proxy-btn" title="设置proxy">
+                <img src="../assets/svg/proxy.svg" />
+              </button>
+              <button type="button" class="layui-btn layui-btn-primary layui-border-color layui-btn-sm" lay-submit lay-filter="set-nodeMirror-btn" title="设置node_mirror">
+                <img src="../assets/svg/nodejs.svg" />
+              </button>
+              <button type="button" class="layui-btn layui-btn-primary layui-border-color layui-btn-sm" lay-submit lay-filter="set-npmMirror-btn" title="设置npm_mirror">
+                <img src="../assets/svg/npm.svg" />
+              </button>
+            </div>
+          </form>
+        </div>
+      </fieldset>
+      <fieldset class="layui-elem-field">
+        <legend>其他信息</legend>
+        <div class="layui-field-box">
+          <article>
+            快捷键：
+            <br />
+            CommandOrControl+F12 开发者工具
+            <br />
+            CommandOrControl+F5 强制刷新
+            <br />
+            F5 刷新
+          </article>
+        </div>
+      </fieldset>
+    </div>
+    <!-- 系统帮助抽屉 -->
+    <!-- tab页签 -->
+    <div class="layui-row container-tabbar">
+      <div class="layui-col-xs12">
+        <div class="layui-tab layui-tab-brief" lay-filter="nvm-tab">
+          <ul class="layui-tab-title">
+            <li class="layui-this" lay-id="1">本地安装</li>
+            <li lay-id="2">远程版本</li>
+            <li id="npmList" style="display: none" lay-id="3">npm全局依赖</li>
+            <li id="nrmList" style="display: none" lay-id="4">nrm列表</li>
+          </ul>
+          <div class="layui-tab-content">
+            <!-- 本地安装页签内容 -->
+            <div class="layui-tab-item layui-show">
+              <div class="node-loading-div" id="node-loading-tips-local">
+                <span class="node-loading-tips"></span>
+              </div>
+              <table class="layui-hide" id="node-local-table"></table>
+            </div>
+            <!-- 本地安装页签内容 -->
+            <!-- 远程版本页签内容 -->
+            <div class="layui-tab-item">
+              <div class="node-loading-div" id="node-loading-tips-net">
+                <span class="node-loading-tips"></span>
+              </div>
+              <!-- 查询form -->
+              <form class="layui-form layui-row layui-col-xs12" id="node-net-search" style="display: none">
+                <div class="layui-col-xs2">
+                  <div class="layui-input-inline">
+                    <input type="text" name="version" placeholder="请输入node版本" class="layui-input" style="width: 180px" maxlength="10" lay-affix="clear" />
+                  </div>
+                </div>
+                <div class="layui-col-xs2">
+                  <div class="layui-input-inline">
+                    <select name="type">
+                      <option value="" selected>请选择类型</option>
+                      <option value="CURRENT">通用版本</option>
+                      <option value="LTS">长期支持版本</option>
+                      <option value="OLDSTABLE">旧的稳定版本</option>
+                      <option value="OLDUNSTABLE">旧的不稳定版本</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="layui-col-xs2">
+                  <div class="layui-input-inline">
+                    <button type="button" class="layui-btn layui-btn-normal layui-btn-radius" lay-submit lay-filter="node-net-table-search">
+                      <i class="layui-icon layui-icon-search"></i>
+                    </button>
+                    <button type="reset" class="layui-btn layui-btn-primary layui-btn-radius" onclick="initNetNodeTable()">
+                      <i class="layui-icon layui-icon-refresh"></i>
+                    </button>
+                  </div>
+                </div>
+              </form>
+              <!-- 查询form -->
+              <table class="layui-hide" id="node-net-table"></table>
+            </div>
+            <!-- 远程版本页签内容 -->
+            <!-- npm全局包页签内容 -->
+            <div class="layui-tab-item">
+              <table class="layui-hide" id="npm-global-table"></table>
+            </div>
+            <!-- npm全局包页签内容 -->
+            <!-- nrm页签内容 -->
+            <div class="layui-tab-item">
+              <table class="layui-hide" id="nrm-list-table"></table>
+            </div>
+            <!-- nrm页签内容 -->
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- tab页签 -->
+  </body>
+  <script src="../plugins/render/render.js"></script>
+  <script src="../plugins/layui/layui.js"></script>
+  <script src="../plugins/index/index.js"></script>
+</html>
